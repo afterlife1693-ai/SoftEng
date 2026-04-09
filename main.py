@@ -7,7 +7,7 @@ from math import *
 # 1. Настройка страницы
 st.set_page_config(page_title="Financial Calculator", layout="wide", page_icon="icon_v2.png")
 
-# 2. CSS для центрирования вкладок и красоты
+# 2. CSS для центрирования вкладок
 st.markdown("""
     <style>
     /* Центрируем заголовок */
@@ -53,7 +53,7 @@ with main_col:
         if type_of_vklad == "на счёт вклада":
             if type_of_calculating == "Конечная сумма":  # Вклад: общий блок
                 with c2:
-                    amount = st.number_input("Начальная сумма вклада", min_value=0.1, value=100000.0, step=10000.0,
+                    amount = st.number_input("Начальная сумма вклада", min_value=100.0, value=100000.0, step=10000.0,
                                              format="%.1f")  # нач сумма
                     rate = st.number_input("Годовая ставка (%)", min_value=0.1, value=10.0, step=0.1,
                                            format="%.1f")  # ставка
@@ -62,7 +62,7 @@ with main_col:
                                              ["Ежемесячно", "Ежеквартально", "Ежегодно"])  # частота процентов
             elif type_of_calculating == "Начальная сумма":
                 with c2:
-                    final_amount = st.number_input("Конечная сумма вклада", min_value=0.0, value=100000.0, step=1000.0,
+                    final_amount = st.number_input("Конечная сумма вклада", min_value=200.0, value=100000.0, step=1000.0,
                                                    format="%.1f")  # кон сумма
                     rate = st.number_input("Годовая ставка (%)", min_value=0.1, value=10.0, step=0.1,
                                            format="%.1f")  # ставка
@@ -72,9 +72,9 @@ with main_col:
                 amount = calculate_start_sum(final_amount, rate, period_years, period_factor(comp_freq))
             else:
                 with c2:
-                    amount = st.number_input("Начальная сумма вклада", min_value=0.1, value=100000.0, step=10000.0,
+                    amount = st.number_input("Начальная сумма вклада", min_value=100.0, value=100000.0, step=10000.0,
                                              format="%.1f")  # нач сумма
-                    final_amount = st.number_input("Конечная сумма вклада", min_value=0.2, value=150000.0, step=10000.0,
+                    final_amount = st.number_input("Конечная сумма вклада", min_value=200.0, value=150000.0, step=10000.0,
                                                    format="%.1f")
                     rate = st.number_input("Годовая ставка (%)", min_value=0.1, value=10.0, step=0.1,
                                            format="%.1f")  # ставка
@@ -86,27 +86,27 @@ with main_col:
         else:
             if type_of_calculating == "Конечная сумма":  # Вклад: общий блок
                 with c2:
-                    amount = st.number_input("Начальная сумма вклада", min_value=0.0, value=100000.0, step=10000.0,
+                    amount = st.number_input("Начальная сумма вклада", min_value=100.0, value=100000.0, step=10000.0,
                                              format="%.1f")  # нач сумма
-                    rate = st.number_input("Годовая ставка (%)", min_value=0.0, value=10.0, step=0.1,
+                    rate = st.number_input("Годовая ставка (%)", min_value=0.1, value=10.0, step=0.1,
                                            format="%.1f")  # ставка
                     period_years = st.number_input("Срок вклада (лет)", min_value=1, value=5, step=1)  # срок
 
             elif type_of_calculating == "Начальная сумма":
                 with c2:
-                    final_amount = st.number_input("Конечная сумма вклада", min_value=0.0, value=100000.0, step=10000.0,
+                    final_amount = st.number_input("Конечная сумма вклада", min_value=200.0, value=100000.0, step=10000.0,
                                                    format="%.1f")  # кон сумма
-                    rate = st.number_input("Годовая ставка (%)", min_value=0.0, value=10.0, step=0.1,
+                    rate = st.number_input("Годовая ставка (%)", min_value=0.1, value=10.0, step=0.1,
                                            format="%.1f")  # ставка
                     period_years = st.number_input("Срок вклада (лет)", min_value=1, value=5, step=1)  # срок
                 amount = alt_start_sum(final_amount, rate, period_years)
             else:
                 with c2:
-                    amount = st.number_input("Начальная сумма вклада", min_value=0.0, value=100000.0, step=10000.0,
+                    amount = st.number_input("Начальная сумма вклада", min_value=100.0, value=100000.0, step=10000.0,
                                              format="%.1f")  # нач сумма
-                    final_amount = st.number_input("Конечная сумма вклада", min_value=0.0, value=150000.0, step=10000.0,
+                    final_amount = st.number_input("Конечная сумма вклада", min_value=200.0, value=150000.0, step=10000.0,
                                                    format="%.1f")
-                    rate = st.number_input("Годовая ставка (%)", min_value=0.0, value=10.0, step=0.1,
+                    rate = st.number_input("Годовая ставка (%)", min_value=0.1, value=10.0, step=0.1,
                                            format="%.1f")  # ставка
                 period_years = alt_p_years(final_amount, amount, rate)
 
@@ -171,47 +171,51 @@ with main_col:
                 term_years_cr = st.number_input("Срок кредита (лет)", min_value=1, value=5, step=1)
             loan_amount = cre_sum(monthly_payment, apr, term_years_cr)
 
-        with c6:
-            color_up = st.color_picker(label="Цвет кредитной суммы", value='#053c5e')
-            color_down = st.color_picker(label="Цвет процентов", value='#a31621')
-            color_lines = st.color_picker(label="Цвeт линий", value='#538d22')
-            color_dots = st.color_picker(label="Цвет точек", value='#538d22')
+        if loan_amount != inf and term_years_cr != inf:
 
-        r = apr / 100.0 / 12
-        n = ceil(term_years_cr * 12)
-        st.divider()
-        m1, m2 = st.columns(2)
-        m1.metric("Сумма кредита", f"{loan_amount:,.2f} ₽")
-        m2.metric("Общая переплата", f"{monthly_payment * n - loan_amount:,.2f} ₽")
-        m1.metric("Ежемесячный платёж", f"{monthly_payment:,.2f} ₽")
-        m2.metric("Срок кредита", f'{term_years_cr:,.2f} лет')
+            with c6:
+                color_up = st.color_picker(label="Цвет кредитной суммы", value='#053c5e')
+                color_down = st.color_picker(label="Цвет процентов", value='#a31621')
+                color_lines = st.color_picker(label="Цвeт линий", value='#538d22')
+                color_dots = st.color_picker(label="Цвет точек", value='#538d22')
 
-        # график амортизации
-        payments = []
-        balances = []
+            r = apr / 100.0 / 12
+            n = ceil(term_years_cr * 12)
+            st.divider()
+            m1, m2 = st.columns(2)
+            m1.metric("Сумма кредита", f"{loan_amount:,.2f} ₽")
+            m2.metric("Общая переплата", f"{monthly_payment * n - loan_amount:,.2f} ₽")
+            m1.metric("Ежемесячный платёж", f"{monthly_payment:,.2f} ₽")
+            m2.metric("Срок кредита", f'{term_years_cr:,.2f} лет')
+    
+            # график амортизации
+            payments = []
+            balances = []
 
-        balance = loan_amount
-        for i in range(1, n + 1):
-            interest = balance * apr / 100.0 / 12
-            principal = monthly_payment - interest
-            balance = balance - principal
-            payments.append({"period": i, "payment": monthly_payment, "interest": interest, "principal": principal,
-                             "balance": max(balance, 0)})
-            balances.append(balance)
+            balance = loan_amount
+            for i in range(1, n + 1):
+                interest = balance * apr / 100.0 / 12
+                principal = monthly_payment - interest
+                balance = balance - principal
+                payments.append({"period": i, "payment": monthly_payment, "interest": interest, "principal": principal,
+                                "balance": max(balance, 0)})
+                balances.append(balance)
 
-        df = pd.DataFrame(payments)
-        fig2 = go.Figure()
-        fig2.add_trace(go.Bar(x=df["period"], y=df["principal"], name="Кредитная сумма", marker=dict(color=color_up)))
-        fig2.add_trace(go.Bar(x=df["period"], y=df["interest"], name="Проценты", marker=dict(color=color_down)))
-        fig2.update_layout(barmode='stack', title="График от",
-                           xaxis_title="Период, мес",
-                           yaxis_title="Сумма, ₽")
-        st.plotly_chart(fig2, width='stretch')
+            df = pd.DataFrame(payments)
+            fig2 = go.Figure()
+            fig2.add_trace(go.Bar(x=df["period"], y=df["principal"], name="Кредитная сумма", marker=dict(color=color_up)))
+            fig2.add_trace(go.Bar(x=df["period"], y=df["interest"], name="Проценты", marker=dict(color=color_down)))
+            fig2.update_layout(barmode='stack', title="График от",
+                            xaxis_title="Период, мес",
+                            yaxis_title="Сумма, ₽")
+            st.plotly_chart(fig2, width='stretch')
 
-        fig3 = go.Figure()
-        fig3.add_trace(
-            go.Scatter(x=df["period"], marker=dict(color=color_lines, size=6, line=dict(color=color_dots, width=4)),
-                       y=df["balance"], mode="lines+markers", name="Остаток долга"))
-        fig3.update_layout(title="Остаток долга по месяцам",
-                           xaxis_title="Период, мес", yaxis_title="Остаток долга, ₽")
-        st.plotly_chart(fig3, width='stretch')
+            fig3 = go.Figure()
+            fig3.add_trace(
+                go.Scatter(x=df["period"], marker=dict(color=color_lines, size=6, line=dict(color=color_dots, width=4)),
+                        y=df["balance"], mode="lines+markers", name="Остаток долга"))
+            fig3.update_layout(title="Остаток долга по месяцам",
+                            xaxis_title="Период, мес", yaxis_title="Остаток долга, ₽")
+            st.plotly_chart(fig3, width='stretch')
+        else:
+            st.info("Вы никогда не выплатите и не возьмёте такой кредит, даже если оставите его на своих пра-пра-правнуков, попробуйте ввести другие значения:)")

@@ -3,7 +3,7 @@ def period_factor(freq_label):
     return {"Ежемесячно": 12, "Ежеквартально": 4, "Ежегодно": 1, 0: 0}[freq_label]
 
 # для НА СЧЁТ ВКЛАДА
-def calculate_deposit(balance, rate, years, cap_freq=1.0, monthly_contr=0.0, contr_freq=0.0):
+def calculate_deposit(balance, rate, years, cap_freq=1.0):
     """
     balance: начальная сумма
     monthly_contr: сумма пополнения (за одно пополнение)
@@ -19,11 +19,7 @@ def calculate_deposit(balance, rate, years, cap_freq=1.0, monthly_contr=0.0, con
     for year in range(1, years + 1):
         start_year_balance = balance
         for month in range(1, 13):
-            # 1. Пополнение (допустим, в начале месяца)
-            if contr_freq != 0.0:
-                if (month - 1) % (12 / contr_freq) == 0:
-                    balance += monthly_contr
-            # 2. Начисление процентов (если наступил месяц капитализации)
+            # 1. Начисление процентов (если наступил месяц капитализации)
             if month % (12 / cap_freq) == 0:
                 interest = balance * interest_per_cap
                 balance += interest
@@ -60,8 +56,11 @@ def cre_plat(s, r, years):
 def cre_sum(a, r, years):
     i = r/12/100
     n = years*12
-    return (a*((1+i)**n-1))/(i*(1+i)**n)
-
+    try:
+        return (a*((1+i)**n-1))/(i*(1+i)**n)
+    except OverflowError:
+        return inf
 def cre_years(s, a, r):
     i = r/12/100
-    return log(a/(a-s*i), 1+i)
+    return log(a/(a-s*i), 1+i) if (a-s*i) > 0 else inf
+
