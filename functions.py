@@ -58,7 +58,7 @@ def cre_sum(a, r, years):
     n = years*12
     try:
         return (a*((1+i)**n-1))/(i*(1+i)**n)
-    except OverflowError:
+    except OverflowError or ValueError:
         return inf
 def cre_years(s, a, r):
     i = r/12/100
